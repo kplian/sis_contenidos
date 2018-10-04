@@ -56,6 +56,25 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+        {
+            config: {
+                name: 'estado',
+                fieldLabel: 'estado',
+                allowBlank: true,
+                emptyText: 'estado...',
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['ACTIVO','INACTIVO'],
+                width: 200
+            },
+            type: 'ComboBox',
+            id_grupo: 1,
+            filters:{pfiltro:'con.estado',type:'string'},
+            form: true,
+            grid: true
+        },
 		{
 			config:{
 				name: 'estado_reg',
@@ -86,21 +105,7 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
-		{
-			config:{
-				name: 'estado',
-				fieldLabel: 'estado',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:1
-			},
-				type:'TextField',
-				filters:{pfiltro:'con.estado',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
+
 		{
 			config:{
 				name: 'usr_reg',

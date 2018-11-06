@@ -1,19 +1,19 @@
-CREATE OR REPLACE FUNCTION "cms"."ft_contenido_ime" (	
+CREATE OR REPLACE FUNCTION "cms"."ft_categoria_ime" (	
 				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
 RETURNS character varying AS
 $BODY$
 
 /**************************************************************************
  SISTEMA:		Contenidos
- FUNCION: 		cms.ft_contenido_ime
- DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'cms.tcontenido'
+ FUNCION: 		cms.ft_categoria_ime
+ DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'cms.tcategoria'
  AUTOR: 		 (admin)
- FECHA:	        23-09-2018 18:04:19
+ FECHA:	        30-10-2018 14:04:46
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE				FECHA				AUTOR				DESCRIPCION
- #0				23-09-2018 18:04:19								Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'cms.tcontenido'	
+ #0				30-10-2018 14:04:46								Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'cms.tcategoria'	
  #
  ***************************************************************************/
 
@@ -25,60 +25,50 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_contenido	integer;
+	v_id_categoria	integer;
 			    
 BEGIN
 
-    v_nombre_funcion = 'cms.ft_contenido_ime';
+    v_nombre_funcion = 'cms.ft_categoria_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'CMS_CON_INS'
+ 	#TRANSACCION:  'CMS_CAT_INS'
  	#DESCRIPCION:	Insercion de registros
  	#AUTOR:		admin	
- 	#FECHA:		23-09-2018 18:04:19
+ 	#FECHA:		30-10-2018 14:04:46
 	***********************************/
 
-	if(p_transaccion='CMS_CON_INS')then
+	if(p_transaccion='CMS_CAT_INS')then
 					
         begin
         	--Sentencia de la insercion
-        	insert into cms.tcontenido(
+        	insert into cms.tcategoria(
 			nombre,
 			estado_reg,
-			orden,
-			estado,
-			id_usuario_reg,
+			id_usuario_ai,
 			fecha_reg,
 			usuario_ai,
-			id_usuario_ai,
+			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod,
-            tipo,
-            contenido,
-            id_categoria
+			id_usuario_mod
           	) values(
 			v_parametros.nombre,
 			'activo',
-			v_parametros.orden,
-			v_parametros.estado,
-			p_id_usuario,
+			v_parametros._id_usuario_ai,
 			now(),
 			v_parametros._nombre_usuario_ai,
-			v_parametros._id_usuario_ai,
+			p_id_usuario,
 			null,
-			null,
-            v_parametros.tipo,
-            v_parametros.contenido,
-            v_parametros.id_categoria
-
+			null
+							
 			
 			
-			)RETURNING id_contenido into v_id_contenido;
+			)RETURNING id_categoria into v_id_categoria;
 			
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Contenido almacenado(a) con exito (id_contenido'||v_id_contenido||')'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_contenido',v_id_contenido::varchar);
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Categoria almacenado(a) con exito (id_categoria'||v_id_categoria||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_categoria',v_id_categoria::varchar);
 
             --Devuelve la respuesta
             return v_resp;
@@ -86,32 +76,27 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'CMS_CON_MOD'
+ 	#TRANSACCION:  'CMS_CAT_MOD'
  	#DESCRIPCION:	Modificacion de registros
  	#AUTOR:		admin	
- 	#FECHA:		23-09-2018 18:04:19
+ 	#FECHA:		30-10-2018 14:04:46
 	***********************************/
 
-	elsif(p_transaccion='CMS_CON_MOD')then
+	elsif(p_transaccion='CMS_CAT_MOD')then
 
 		begin
 			--Sentencia de la modificacion
-			update cms.tcontenido set
+			update cms.tcategoria set
 			nombre = v_parametros.nombre,
-			orden = v_parametros.orden,
-			estado = v_parametros.estado,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai,
-        tipo = v_parametros.tipo,
-        contenido = v_parametros.contenido,
-        id_categoria = v_parametros.id_categoria
-			where id_contenido=v_parametros.id_contenido;
+			usuario_ai = v_parametros._nombre_usuario_ai
+			where id_categoria=v_parametros.id_categoria;
                
 			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Contenido modificado(a)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_contenido',v_parametros.id_contenido::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Categoria modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_categoria',v_parametros.id_categoria::varchar);
                
             --Devuelve la respuesta
             return v_resp;
@@ -119,22 +104,22 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'CMS_CON_ELI'
+ 	#TRANSACCION:  'CMS_CAT_ELI'
  	#DESCRIPCION:	Eliminacion de registros
  	#AUTOR:		admin	
- 	#FECHA:		23-09-2018 18:04:19
+ 	#FECHA:		30-10-2018 14:04:46
 	***********************************/
 
-	elsif(p_transaccion='CMS_CON_ELI')then
+	elsif(p_transaccion='CMS_CAT_ELI')then
 
 		begin
 			--Sentencia de la eliminacion
-			delete from cms.tcontenido
-            where id_contenido=v_parametros.id_contenido;
+			delete from cms.tcategoria
+            where id_categoria=v_parametros.id_categoria;
                
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Contenido eliminado(a)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_contenido',v_parametros.id_contenido::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Categoria eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_categoria',v_parametros.id_categoria::varchar);
               
             --Devuelve la respuesta
             return v_resp;
@@ -160,4 +145,4 @@ END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE
 COST 100;
-ALTER FUNCTION "cms"."ft_contenido_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION "cms"."ft_categoria_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

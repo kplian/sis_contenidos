@@ -33,8 +33,12 @@ class MODContenido extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		
-		//Ejecuta la instruccion
+		$this->captura('tipo','varchar');
+        $this->captura('contenido','text');
+        $this->captura('id_categoria','int4');
+        $this->captura('desc_categoria','varchar');
+
+        //Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
@@ -53,6 +57,9 @@ class MODContenido extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('orden','orden','int4');
 		$this->setParametro('estado','estado','varchar');
+		$this->setParametro('tipo','tipo','varchar');
+        $this->setParametro('contenido','contenido','codigo_html');
+        $this->setParametro('id_categoria','id_categoria','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -74,6 +81,9 @@ class MODContenido extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('orden','orden','int4');
 		$this->setParametro('estado','estado','varchar');
+		$this->setParametro('tipo','tipo','varchar');
+        $this->setParametro('contenido','contenido','codigo_html');
+        $this->setParametro('id_categoria','id_categoria','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -118,6 +128,24 @@ class MODContenido extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
-			
+
+    function listarMenuWeb(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='cms.ft_contenido_sel';
+        $this->transaccion='CMS_MENUWEB_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->count=false;
+
+        //Definicion de la lista del resultado del query
+        $this->captura('menu_json','text');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
 }
 ?>

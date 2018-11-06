@@ -52,10 +52,15 @@ BEGIN
 						con.fecha_mod,
 						con.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						con.tipo,
+						con.contenido,
+						con.id_categoria,
+						cate.nombre as desc_categoria
 						from cms.tcontenido con
 						inner join segu.tusuario usu1 on usu1.id_usuario = con.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = con.id_usuario_mod
+						left join cms.tcategoria cate on cate.id_categoria = con.id_categoria
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -82,6 +87,8 @@ BEGIN
 					    from cms.tcontenido con
 					    inner join segu.tusuario usu1 on usu1.id_usuario = con.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = con.id_usuario_mod
+						left join cms.tcategoria cate on cate.id_categoria = con.id_categoria
+
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -143,8 +150,65 @@ BEGIN
 																		 where ta.tabla = ''tcontenido''
 																	 ) tp
 														) as tipo_archivo
-											from cms.tcontenido c
+											from cms.tcontenido c where tipo = ''SLIDER''
 										) contenido
+
+			';
+
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+
+	/*********************************
+ 	#TRANSACCION:  'CMS_MENUWEB_SEL'
+ 	#DESCRIPCION:	SELECT PARA ARMAR EL MENU EN LA WEB
+ 	#AUTOR:		fafigueroa
+ 	#FECHA:		23-09-2018 18:04:19
+	***********************************/
+
+	elsif(p_transaccion='CMS_MENUWEB_SEL')then
+
+		begin
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='
+
+
+WITH RECURSIVE t( nombre,ruta_archivo,clase_vista,id_gui,fk_id_gui,parametros,orden_logico) AS (
+  SELECT
+    tg.nombre,
+    tg.ruta_archivo,
+    tg.clase_vista,
+    tg.id_gui,
+    0 as fk_id_gui,
+    parametros,
+    tg.orden_logico
+  from segu.tgui tg
+  WHERE tg.nombre = ''menu_web'' and tg.estado_reg = ''activo''
+
+  UNION ALL
+  SELECT
+    tg.nombre,
+    tg.ruta_archivo,
+    tg.clase_vista,
+    tg.id_gui,
+    teg.fk_id_gui,
+    tg.parametros,
+    tg.orden_logico
+  FROM segu.testructura_gui teg
+    INNER JOIN t t on t.id_gui = teg.fk_id_gui
+    INNER JOIN segu.tgui tg on tg.id_gui = teg.id_gui
+  where tg.estado_reg = ''activo''
+)
+select to_json(array_to_json(array_agg(menu)) :: text) #>> ''{}'' as menu_json
+from
+  (
+    SELECT nombre,ruta_archivo,clase_vista,id_gui,fk_id_gui,parametros
+    FROM t
+    where fk_id_gui != 0
+ORDER BY fk_id_gui ASC,orden_logico ASC
+  ) menu;
 
 			';
 

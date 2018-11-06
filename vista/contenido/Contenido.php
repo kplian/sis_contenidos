@@ -41,6 +41,26 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
+        {
+            config: {
+                name: 'tipo',
+                fieldLabel: 'Tipo',
+                allowBlank: true,
+                emptyText: 'Tipo...',
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['CONTENIDO','SLIDER'],
+                width: 200
+            },
+            type: 'ComboBox',
+            id_grupo: 1,
+            filters:{pfiltro:'con.tipo',type:'string'},
+            form: true,
+            grid: true
+        },
+
 		{
 			config:{
 				name: 'nombre',
@@ -56,6 +76,51 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+
+        {
+            config: {
+                name: 'id_categoria',
+                fieldLabel: 'Categoria',
+                allowBlank: true,
+                emptyText: 'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_contenidos/control/Categoria/listarCategoria',
+                    id: 'id_categoria',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_categoria', 'nombre'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'cate.nombre'}
+                }),
+                valueField: 'id_categoria',
+                displayField: 'nombre',
+                gdisplayField: 'desc_categoria',
+                hiddenName: 'id_categoria',
+                forceSelection: true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 15,
+                queryDelay: 1000,
+                anchor: '100%',
+                gwidth: 150,
+                minChars: 2,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['desc_categoria']);
+                }
+            },
+            type: 'ComboBox',
+            id_grupo: 0,
+            filters: {pfiltro: 'cate.nombre',type: 'string'},
+            grid: true,
+            form: true
+        },
+
         {
             config: {
                 name: 'estado',
@@ -90,6 +155,18 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
+        {
+            config:{
+                name: 'contenido',
+                fieldLabel: 'Contenido',
+                anchor: '80%'
+            },
+            type:'HtmlEditor',
+            id_grupo:1,
+            form:true
+        },
+       
+
 		{
 			config:{
 				name: 'orden',
@@ -219,8 +296,12 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		
-	],
+		{name:'tipo', type: 'string'},
+		{name:'contenido', type: 'string'},
+        {name:'id_categoria', type: 'numeric'},
+        'desc_categoria',
+
+    ],
 	sortInfo:{
 		field: 'id_contenido',
 		direction: 'ASC'

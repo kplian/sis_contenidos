@@ -116,7 +116,7 @@ BEGIN
 										select to_json(array_to_json(array_agg(contenido)) :: text) #>> ''{}'' as json
 										from
 										(
-											select c.nombre,c.estado,c.orden,
+											select c.contenido as content,c.nombre,c.estado,c.orden,
 														(
 															select array_to_json(array_agg(tp))
 															from (

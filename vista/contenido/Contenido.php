@@ -274,8 +274,9 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
-		}
-	],
+		},
+
+    ],
 	tam_pag:50,	
 	title:'Contenido',
 	ActSave:'../../sis_contenidos/control/Contenido/insertarContenido',

@@ -31,7 +31,7 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 	},
 			
 	Atributos:[
-		{
+		/*{
 			//configuracion del componente
 			config:{
 					labelSeparator:'',
@@ -40,7 +40,22 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 			form:true 
-		},
+		},*/
+        {
+            config:{
+                name: 'id_contenido',
+                fieldLabel: 'id_contenido',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'con.id_contenido',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
         {
             config: {
                 name: 'tipo',

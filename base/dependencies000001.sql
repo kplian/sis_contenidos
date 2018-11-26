@@ -59,3 +59,15 @@ select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'Contenido.1.4.1', 'no'
 
 
 /*********************************F-DEP-FFP-MER-0-06/11/2018***********************************/
+
+
+/*********************************I-DEP-FFP-CMS-0-26/11/2018***********************************/
+
+
+ALTER TABLE ONLY cms.tcontenido
+  ADD CONSTRAINT fk_tcontenido__id_categoria
+FOREIGN KEY (id_categoria) REFERENCES cms.tcategoria(id_categoria);
+
+
+/*********************************F-DEP-FFP-CMS-0-26/11/2018***********************************/
+

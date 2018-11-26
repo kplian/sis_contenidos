@@ -21,7 +21,7 @@ Phx.vista.Categoria=Ext.extend(Phx.gridInterfaz,{
 	},
 			
 	Atributos:[
-		{
+		/*{
 			//configuracion del componente
 			config:{
 					labelSeparator:'',
@@ -30,7 +30,23 @@ Phx.vista.Categoria=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 			form:true 
-		},
+		},*/
+        {
+            config:{
+                name: 'id_categoria',
+                fieldLabel: 'id_categoria',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'cat.id_categoria',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
+
 		{
 			config:{
 				name: 'nombre',

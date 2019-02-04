@@ -38,13 +38,15 @@ Phx.vista.Categoria=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
-                maxLength:255
+                maxLength:255,
+                readOnly : true
+
             },
             type:'TextField',
             filters:{pfiltro:'cat.id_categoria',type:'string'},
             id_grupo:1,
             grid:true,
-            form:false
+            form:true
         },
 
 		{

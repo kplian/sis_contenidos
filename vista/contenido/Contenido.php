@@ -48,13 +48,15 @@ Phx.vista.Contenido=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
-                maxLength:255
+                maxLength:255,
+                readOnly : true
+
             },
             type:'TextField',
             filters:{pfiltro:'con.id_contenido',type:'string'},
             id_grupo:1,
             grid:true,
-            form:false
+            form:true
         },
         {
             config: {
